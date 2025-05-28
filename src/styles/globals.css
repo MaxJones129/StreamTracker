@@ -1,4 +1,10 @@
+/* src/app/globals.css */
+
 body {
-  background: black;
-  color: white;
+  background-color: black !important;
+}
+
+.modal-backdrop-blur {
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
