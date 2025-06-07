@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import styles from '../styles/ChatWidget.module.css'; // <- You’ll create this CSS module
+import { useAuth } from '@/utils/context/authContext'; // <-- 🔥 Add this line if you're using Firebase auth
+import styles from '../styles/ChatWidget.module.css';
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,8 @@ export default function ChatWidget() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { user } = useAuth(); // 🔐 Firebase auth hook
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -26,7 +29,10 @@ export default function ChatWidget() {
       const res = await fetch('/api/ratgpt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMsg] }),
+        body: JSON.stringify({
+          messages: [...messages, userMsg],
+          userUid: user?.uid, // ✅ Pass logged-in user's UID to backend
+        }),
       });
 
       const data = await res.json();
