@@ -227,7 +227,8 @@ export async function POST(req) {
       rating: 0,
       tmdbRating: ep.vote_average ?? null,
       videoId: createdShow.id,
-      userId: createdShow.userId,
+      // eslint-disable-next-line object-shorthand
+      userId,
     }));
 
     await Promise.all(
