@@ -158,7 +158,8 @@ export async function POST(req) {
       status,
       rating: parseInt(rating, 10),
 
-      userId,
+      // eslint-disable-next-line object-shorthand
+      userId: userId,
     };
 
     const videoRes = await fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos', {
