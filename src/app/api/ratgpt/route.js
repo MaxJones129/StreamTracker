@@ -109,15 +109,26 @@ export async function POST(req) {
     const body = await req.json();
     const { messages, userUid } = body;
 
+    // 🔍 LOGGING START
+    console.log('[RatGPT] Incoming body:', body);
+    console.log('[RatGPT] Extracted userUid:', userUid);
+    // 🔍 LOGGING END
+
     // Get actual user ID from the backend using Firebase UID
     const userRes = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/users/uid/${userUid}`);
     const userData = await userRes.json();
+
+    // 🔍 LOG USER LOOKUP RESULT
+    console.log('[RatGPT] Response from BE /users/uid/:', userData);
 
     if (!userRes.ok || !userData.id) {
       throw new Error('Could not resolve user ID');
     }
 
     const userId = userData.id;
+
+    // 🔍 Confirm final resolved userId
+    console.log('[RatGPT] Final resolved userId:', userId);
 
     const chat = await openai.chat.completions.create({
       model: 'gpt-4',
@@ -157,12 +168,12 @@ export async function POST(req) {
       releaseYear: parseInt(releaseYear, 10),
       status,
       rating: parseInt(rating, 10),
-
       // eslint-disable-next-line object-shorthand
-      userId: userId,
+      userId: userId, // <-- DO NOT REMOVE
     };
 
-    console.log('[RatGPT] Resolved userId from backend:', userId);
+    console.log('[RatGPT] Final video payload:', videoPayload);
+
     const videoRes = await fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
