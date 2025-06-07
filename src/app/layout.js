@@ -11,8 +11,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ClientProvider>{children}</ClientProvider>
-        <ChatWidget />
+        <ClientProvider>
+          {children}
+          <ChatWidget />
+        </ClientProvider>
       </body>
     </html>
   );
