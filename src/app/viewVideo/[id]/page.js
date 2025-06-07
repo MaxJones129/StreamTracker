@@ -399,9 +399,9 @@ export default function ViewVideoPage() {
               <Form.Label>Episode Number</Form.Label>
               <Form.Control type="number" value={newEpisode.episodeNumber || ''} onChange={(e) => setNewEpisode({ ...newEpisode, episodeNumber: parseInt(e.target.value, 10) })} />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formDescription">
+            <Form.Group className="mb-3" controlId="formEpisodeStatus">
               <Form.Label>Status</Form.Label>
-              <Form.Select value={editData.status} onChange={(e) => setEditData({ ...editData, status: e.target.value })}>
+              <Form.Select value={newEpisode.status || ''} onChange={(e) => setNewEpisode({ ...newEpisode, status: e.target.value })}>
                 <option value="">Select Status</option>
                 <option value="Watched">Watched</option>
                 <option value="Not Watched">Not Watched</option>
@@ -425,7 +425,7 @@ export default function ViewVideoPage() {
                   ...newEpisode,
                   videoId: id,
                   userId: video.userId,
-                  status: 'Not Watched',
+                  status: newEpisode.status || 'Not Watched',
                   timeStopped: '00:00:00',
                 }),
               });

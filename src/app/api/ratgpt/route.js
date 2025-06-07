@@ -158,7 +158,7 @@ export async function POST(req) {
       status,
       rating: parseInt(rating, 10),
 
-      userId: userId - 1,
+      userId,
     };
 
     const videoRes = await fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos', {
