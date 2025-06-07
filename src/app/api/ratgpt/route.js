@@ -162,6 +162,7 @@ export async function POST(req) {
       userId: userId,
     };
 
+    console.log('[RatGPT] Resolved userId from backend:', userId);
     const videoRes = await fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -243,7 +244,7 @@ export async function POST(req) {
     );
 
     // 🔁 Get fresh hydrated list for user
-    const userVideosRes = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos/user/${createdShow.userId}`);
+    const userVideosRes = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos/user/${userId}`);
     const userVideos = await userVideosRes.json();
 
     return new Response(
