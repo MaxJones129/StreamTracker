@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/utils/context/authContext'; // <-- 🔥 Add this line if you're using Firebase auth
+import { useAuth } from '../utils/context/authContext'; // 🔐 Firebase auth hook
 import styles from '../styles/ChatWidget.module.css';
 
 export default function ChatWidget() {
