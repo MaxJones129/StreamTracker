@@ -1,10 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import styles from '../styles/ChatWidget.module.css'; // <- You’ll create this CSS module
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      role: 'assistant',
+      content: '👋 Hi! You can ask me to add a show like this:\n\n“I’m currently watching Breaking Bad.”\n\nI’ll take care of the rest!',
+    },
+  ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -24,55 +30,60 @@ export default function ChatWidget() {
       });
 
       const data = await res.json();
-      console.log('OpenAI response:', data);
+      console.log('🎯 Response from RatGPT:', data);
 
-      if (data.reply) {
-        setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: data.reply || 'No reply received from API.',
+        },
+      ]);
 
-        // ✅ Trigger global event to refresh show list on homepage
-        window.dispatchEvent(new Event('refresh-shows'));
-      } else {
-        setMessages((prev) => [...prev, { role: 'assistant', content: 'No reply received from API.' }]);
-      }
+      window.dispatchEvent(new Event('refresh-shows'));
     } catch (err) {
-      console.error('Error talking to RatGPT:', err);
-      setMessages((prev) => [...prev, { role: 'assistant', content: 'Error: Unable to get a response.' }]);
+      console.error('RatGPT Error:', err);
+      setMessages((prev) => [...prev, { role: 'assistant', content: '⚠️ Error: Unable to get a response.' }]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      {isOpen ? (
-        <div className="bg-gray-900 border border-white rounded-lg w-80 h-96 flex flex-col p-2 shadow-lg">
-          <div className="flex justify-between items-center mb-1">
-            <h2 className="text-white font-bold text-lg">RatGPT</h2>
-            <button type="button" onClick={() => setIsOpen(false)} className="text-black">
+    <div className={styles.chatWidget}>
+      {isOpen && (
+        <div className={styles.chatBox}>
+          <div className={styles.header}>
+            <span>RatGPT</span>
+            <button type="button" onClick={() => setIsOpen(false)}>
               ✖
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto bg-black p-2 rounded text-white text-sm mb-2">
+          <div className={styles.messages}>
             {messages.map((msg, idx) => (
               // eslint-disable-next-line react/no-array-index-key
-              <div key={idx} className={`mb-1 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
-                <strong>{msg.role === 'user' ? 'You' : 'RatGPT'}:</strong> {msg.content}
+              <div key={idx} className={msg.role === 'user' ? styles.userMsg : styles.botMsg}>
+                <span>
+                  <strong>{msg.role === 'user' ? 'You' : 'RatGPT'}:</strong> {msg.content}
+                </span>
               </div>
             ))}
-            {loading && <p className="text-gray-400">RatGPT is typing...</p>}
+            {loading && <p className={styles.typing}>RatGPT is typing...</p>}
           </div>
 
-          <div className="flex gap-2">
-            <input className="flex-1 p-1 text-black rounded" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} placeholder="Ask something..." />
-            <button type="button" className="bg-blue-600 px-2 text-black rounded" onClick={handleSend}>
+          <div className={styles.inputArea}>
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} placeholder="Ask something..." />
+            <button type="button" onClick={handleSend}>
               Send
             </button>
           </div>
         </div>
-      ) : (
-        <button type="button" onClick={() => setIsOpen(true)} className="bg-blue-600 text-black px-4 py-2 rounded-full shadow-lg">
-          💬 Ask RatGPT
+      )}
+
+      {!isOpen && (
+        <button type="button" className={styles.floatingBtn} onClick={() => setIsOpen(true)}>
+          🐀 Chat with RatGPT
         </button>
       )}
     </div>

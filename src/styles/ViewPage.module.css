@@ -1,0 +1,382 @@
+.container {
+  background-color: #fffaf3;
+  padding: 2rem;
+  border : 1px solid #d6c2b3;
+  border-radius: 12px;
+  max-width: 1200px;
+  margin: auto;
+  color: #5e2b1b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: #5e2b1b;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #7a4a29;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #3b2a1c;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #5e2b1b;
+}
+
+.urlCard {
+  background-color: #fdf3e7;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  color: #3b2a1c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.urlCard a {
+  color: #2b6cb0;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.episodeCard {
+  background-color: #fff6e8;
+  border-left: 6px solid #ffc439;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  color: #2e1b0f;
+}
+
+.episodeCard h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.episodeCard p {
+  font-size: 0.85rem;
+  margin: 0.25rem 0;
+}
+
+.filterRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .filterRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* Buttons that match home theme */
+.buttonPrimary {
+  background-color: #ffc439;
+  border: none;
+  color: #5e2b1b;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+}
+
+.buttonPrimary2 {
+  background-color: #ffc439;
+  border: none;
+  color: #5e2b1b;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  margin-left: .75rem;
+}
+
+.buttonPrimary3 {
+  background-color: #ffc439;
+  border: none;
+  color: #5e2b1b;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  margin-left: 2rem;
+}
+
+.buttonPrimary:hover {
+  background-color: #e6ad00;
+}
+
+.buttonDanger {
+  background-color: #c0392b;
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+}
+
+.buttonDanger:hover {
+  background-color: #a83226;
+}
+
+/* Dropdown */
+.select {
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #d6c2b3;
+  background-color: #fffaf3;
+  color: #5e2b1b;
+}
+
+.episodeCardNew {
+  position: relative;
+  background-color: #fdf3e7;
+  color: #5e2b1b;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+}
+
+.episodeCardNew:hover {
+  transform: translateY(-4px);
+}
+
+.episodeTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  
+}
+
+.episodeInfo {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.episodeButtons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.episodeStatus {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusWatched {
+  background-color: #8B4513;
+}
+
+.statusWatching {
+  background-color: #d97706;
+}
+
+.statusNotWatched {
+  background-color: #9ca3af;
+}
+
+.ratingBadge {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 48px;
+  height: 48px;
+  background-color: #f0b400;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.ratingWrapper {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  width: 70px;
+  height: 70px;
+}
+
+.ratingCircle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg);
+}
+
+.innerCircle {
+  fill: #e6ad00; /* Dark background for better contrast */
+}
+
+.ratingText {
+  fill: #000;
+  font-size: 8px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central; /* changed from middle to central */
+  alignment-baseline: central; /* added this line for better cross-browser alignment */
+}
+
+.circleBg {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 3.8;
+}
+
+.circleProgress {
+  fill: none;
+  stroke: #4caf50; /* Match your color theme or use #f0b400 for gold */
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.customSelect {
+  background-color: #fff6e8;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.selectCustom {
+  background-color: #fff6e8 !important;
+  color: #5e2b1b;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d6c2b3;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: all 0.3s ease-in-out;
+  /* margin-left: .75rem; */
+}
+
+.selectCustom:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #ffc43955;
+  border-color: #ffc439;
+}
+
+.ratingWrapper {
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  margin-left: auto;
+}
+
+.showInfoWrapper {
+  position: relative;
+  background-color: #fffaf3;
+  border: 1px solid #d6c2b3;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.ratingOverlay {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+.ratingBadge {
+  width: 56px;
+  height: 56px;
+  background-color: #f0b400;
+  color: white;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.customModal {
+  background-color: #fdf3e7;
+  color: #5e2b1b;
+  border-radius: 8px;
+}
+
+.customModal .modal-header,
+.customModal .modal-footer {
+  background-color: #fdf3e7;
+  border: none;
+}
+
+.customModal .modal-title {
+  color: #5e2b1b;
+  font-weight: bold;
+}
+
+.customModal .form-label {
+  color: #5e2b1b;
+  font-weight: 600;
+}
+
+.customModal .form-control,
+.customModal .form-select {
+  background-color: #fff7ef;
+  border: 1px solid #e3c7af;
+  color: #5e2b1b;
+}
+
+.customModal .form-control:focus,
+.customModal .form-select:focus {
+  border-color: #ffc439;
+  box-shadow: 0 0 0 0.2rem rgba(255, 196, 57, 0.25);
+}
+
+.customModal .btn-primary {
+  background-color: #ffc439;
+  border-color: #ffc439;
+  color: #5e2b1b;
+  font-weight: 600;
+}
+
+.customModal .btn-primary:hover {
+  background-color: #e6aa2f;
+  border-color: #e6aa2f;
+}
+
+.customModal .btn-secondary {
+  background-color: #a6a6a6;
+  border-color: #a6a6a6;
+  color: white;
+}

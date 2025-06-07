@@ -1,0 +1,33 @@
+.navbar {
+  background-color: transparent !important;
+  backdrop-filter: none;
+  box-shadow: none;
+  border: none;
+  height: auto;
+}
+
+.navbarBrand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: 5e2b1b; /* chocolate text */
+  text-shadow: 1px 1px #fff; /* optional contrast pop */
+}
+
+.link {
+  color: #5e2b1b;
+  font-weight: 600;
+  text-shadow: 1px 1px #fff;
+}
+
+.signOutButton {
+  background-color: transparent;
+  color: #5e2b1b;
+  border: 1px solid #5e2b1b;
+  font-weight: 600;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.signOutButton:hover {
+  background-color: #5e2b1b;
+  color: #fff;
+}

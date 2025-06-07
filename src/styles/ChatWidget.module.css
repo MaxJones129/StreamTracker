@@ -1,0 +1,132 @@
+.chatWidget {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+}
+
+/* Floating Button */
+.floatingBtn {
+  background-color: #ffc439;
+  color: #2e1b0f;
+  font-weight: 700;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.floatingBtn:hover {
+  background-color: #e6ad00;
+  transform: scale(1.05);
+}
+
+/* Chat Box Panel */
+.chatBox {
+  width: 320px;
+  height: 420px;
+  background-color: #fdf3e7;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  animation: fadeInSlideUp 0.25s ease-out;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  background-color: #ffc439;
+  color: #2e1b0f;
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #e2b42f;
+}
+
+/* Message List */
+.messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: #2e1b0f;
+  background-color: #fff8ed;
+}
+
+.userMsg {
+  text-align: right;
+  background-color: #ffecc2;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  margin-left: auto;
+  max-width: 80%;
+}
+
+.botMsg {
+  text-align: left;
+  background-color: #f0e0c6;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  margin-right: auto;
+  max-width: 80%;
+}
+
+.typing {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+/* Input Section */
+.inputArea {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid #e0d6c5;
+  background-color: #fdf3e7;
+}
+
+.inputArea input {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #d5b97f;
+  font-size: 0.9rem;
+}
+
+.inputArea button {
+  background-color: #ffc439;
+  color: #2e1b0f;
+  font-weight: bold;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inputArea button:hover {
+  background-color: #e6ad00;
+  transform: translateY(-1px);
+}
+
+/* Animation */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

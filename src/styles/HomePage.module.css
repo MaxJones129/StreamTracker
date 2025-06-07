@@ -1,0 +1,218 @@
+/* HomePage.module.css */
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.header {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #5e2b1b; /* Dark chocolate */
+  margin-bottom: 1rem;
+}
+
+.addButton {
+  background-color: #ffc439; /* Golden yellow */
+  color: #5e2b1b;
+  font-weight: 600;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.addButton:hover {
+  background-color: #e6ad00;
+  transform: translateY(-1px);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.card {
+  background-color: #fdf3e7; /* Cream */
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #5e2b1b;
+  margin-bottom: 0.25rem;
+}
+
+.cardSubtitle {
+  color: #5e2b1b;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardDesc {
+  font-size: 0.95rem;
+  color: #5e2b1b;
+  margin-bottom: 0.75rem;
+}
+
+.cardSectionTitle {
+  font-weight: bold;
+  color: #5e2b1b;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.platformList {
+  color: #5e2b1b;
+  font-size: 0.9rem;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.3rem 0.75rem;
+  color: white;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusWatched {
+  background-color: #8B4513; /* Rich brown */
+}
+
+.statusWatching {
+  background-color: #d97706; /* Warm amber */
+}
+
+.statusNotWatched {
+  background-color: #9ca3af; /* Soft muted gray */
+}
+
+.ratingBadge {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 48px;
+  height: 48px;
+  background-color: #f0b400;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.ratingWrapper {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  width: 70px;
+  height: 70px;
+}
+
+.ratingCircle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg);
+}
+
+.innerCircle {
+  fill: #e6ad00; /* Dark background for better contrast */
+}
+
+.ratingText {
+  fill: #000;
+  font-size: 8px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central; /* changed from middle to central */
+  alignment-baseline: central; /* added this line for better cross-browser alignment */
+}
+
+.circleBg {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 3.8;
+}
+
+.circleProgress {
+  fill: none;
+  stroke: #4caf50; /* Match your color theme or use #f0b400 for gold */
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.customModal {
+  background-color: #fdf3e7;
+  color: #5e2b1b;
+  border-radius: 8px;
+}
+
+.customModal .modal-header,
+.customModal .modal-footer {
+  background-color: #fdf3e7;
+  border: none;
+}
+
+.customModal .modal-title {
+  color: #5e2b1b;
+  font-weight: bold;
+}
+
+.customModal .form-label {
+  color: #5e2b1b;
+  font-weight: 600;
+}
+
+.customModal .form-control,
+.customModal .form-select {
+  background-color: #fff7ef;
+  border: 1px solid #e3c7af;
+  color: #5e2b1b;
+}
+
+.customModal .form-control:focus,
+.customModal .form-select:focus {
+  border-color: #ffc439;
+  box-shadow: 0 0 0 0.2rem rgba(255, 196, 57, 0.25);
+}
+
+.customModal .btn-primary {
+  background-color: #ffc439;
+  border-color: #ffc439;
+  color: #5e2b1b;
+  font-weight: 600;
+}
+
+.customModal .btn-primary:hover {
+  background-color: #e6aa2f;
+  border-color: #e6aa2f;
+}
+
+.customModal .btn-secondary {
+  background-color: #a6a6a6;
+  border-color: #a6a6a6;
+  color: white;
+}

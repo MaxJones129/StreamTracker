@@ -6,15 +6,79 @@ const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 const normalizePlatformName = (rawName) => {
   const knownMappings = {
+    // Netflix
     Netflix: 'Netflix',
     'Netflix with Ads': 'Netflix',
     'Netflix Standard with Ads': 'Netflix',
-    'Disney+': 'Disney Plus',
-    'Disney Plus': 'Disney Plus',
+
+    // Disney+
+    'Disney+': 'Disney+',
+    'Disney Plus': 'Disney+',
+
+    // Crunchyroll
+    Crunchyroll: 'Crunchyroll',
+
+    // HiDive
+    HiDive: 'HiDive',
+    HIDIVE: 'HiDive',
+
+    // Apple TV+
+    'Apple TV+': 'Apple TV+',
+    'Apple TV Plus': 'Apple TV+',
+
+    // Hulu
+    Hulu: 'Hulu',
+    'Hulu with Ads': 'Hulu',
+    'Hulu (No Ads)': 'Hulu',
+
+    // Amazon Prime Video
     'Amazon Prime Video': 'Amazon Prime Video',
     'Prime Video': 'Amazon Prime Video',
-    'Apple TV+': 'Apple TV Plus',
-    'Apple TV Plus': 'Apple TV Plus',
+
+    // HBO Max
+    Max: 'HBO Max',
+    'HBO Max': 'HBO Max',
+
+    // Peacock
+    Peacock: 'Peacock',
+    'Peacock Premium': 'Peacock',
+
+    // Paramount+
+    'Paramount+': 'Paramount+',
+    'Paramount Plus': 'Paramount+',
+
+    // YouTube
+    YouTube: 'YouTube',
+    'YouTube Premium': 'YouTube',
+
+    // Tubi
+    'Tubi TV': 'Tubi',
+    Tubi: 'Tubi',
+
+    // Pluto TV
+    'Pluto TV': 'Pluto TV',
+
+    // Crackle
+    Crackle: 'Crackle',
+
+    // The Roku Channel
+    'The Roku Channel': 'The Roku Channel',
+
+    // Freevee
+    Freevee: 'Freevee',
+    'IMDb TV': 'Freevee',
+
+    // Funimation
+    Funimation: 'Funimation',
+
+    // VRV
+    VRV: 'VRV',
+
+    // Twitch
+    Twitch: 'Twitch',
+
+    // TikTok
+    TikTok: 'TikTok',
   };
   return knownMappings[rawName] || rawName;
 };
@@ -22,14 +86,14 @@ const normalizePlatformName = (rawName) => {
 export async function getOrCreatePlatform(platformName) {
   const normalized = normalizePlatformName(platformName);
 
-  const platformRes = await fetch('http://localhost:5193/api/Platforms');
+  const platformRes = await fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/Platforms');
   if (!platformRes.ok) throw new Error('Failed to fetch platforms');
   const platformData = await platformRes.json();
   const existing = platformData.$values.find((p) => p.name.toLowerCase() === normalized.toLowerCase());
 
   if (existing) return existing.id;
 
-  const createRes = await fetch('http://localhost:5193/api/Platforms', {
+  const createRes = await fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/Platforms', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: normalized }),
@@ -43,7 +107,17 @@ export async function getOrCreatePlatform(platformName) {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { messages } = body;
+    const { messages, userUid } = body;
+
+    // Get actual user ID from the backend using Firebase UID
+    const userRes = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/users/uid/${userUid}`);
+    const userData = await userRes.json();
+
+    if (!userRes.ok || !userData.id) {
+      throw new Error('Could not resolve user ID');
+    }
+
+    const userId = userData.id;
 
     const chat = await openai.chat.completions.create({
       model: 'gpt-4',
@@ -83,10 +157,11 @@ export async function POST(req) {
       releaseYear: parseInt(releaseYear, 10),
       status,
       rating: parseInt(rating, 10),
-      userId: 1,
+
+      userId: userId - 1,
     };
 
-    const videoRes = await fetch('http://localhost:5193/api/Videos', {
+    const videoRes = await fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(videoPayload),
@@ -102,11 +177,24 @@ export async function POST(req) {
 
     const tvId = tvShow.id;
 
+    const tmdbRating = tvShow.vote_average ?? null;
+
+    // PATCH video to update tmdbRating
+    await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos/${createdShow.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...createdShow,
+        // eslint-disable-next-line object-shorthand
+        tmdbRating: tmdbRating,
+      }),
+    });
+
     // 🔗 Add TMDB watch page as streaming URL
     const tmdbUrl = `https://www.themoviedb.org/tv/${tvId}-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
     const tmdbPlatformId = await getOrCreatePlatform('TMDB');
 
-    await fetch('http://localhost:5193/api/VideoUrls', {
+    await fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/VideoUrls', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ videoId: createdShow.id, platformId: tmdbPlatformId, url: tmdbUrl }),
@@ -137,13 +225,14 @@ export async function POST(req) {
       timeStopped: '00:00:00',
       status: 'Not Watched',
       rating: 0,
+      tmdbRating: ep.vote_average ?? null,
       videoId: createdShow.id,
       userId: createdShow.userId,
     }));
 
     await Promise.all(
       episodePayloads.map((payload) =>
-        fetch('http://localhost:5193/api/Episodes', {
+        fetch('https://streamtracker-be-9d38b309655b.herokuapp.com/api/Episodes', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -151,7 +240,17 @@ export async function POST(req) {
       ),
     );
 
-    return new Response(JSON.stringify({ reply: `✅ I added "${createdShow.title}" with episodes and TMDB streaming info!` }), { status: 200 });
+    // 🔁 Get fresh hydrated list for user
+    const userVideosRes = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos/user/${createdShow.userId}`);
+    const userVideos = await userVideosRes.json();
+
+    return new Response(
+      JSON.stringify({
+        reply: `✅ I added "${createdShow.title}" with episodes and TMDB streaming info!`,
+        videos: userVideos,
+      }),
+      { status: 200 },
+    );
   } catch (error) {
     console.error('RatGPT error:', error);
     return new Response(JSON.stringify({ reply: '❌ Error: Unable to add the show.' }), {

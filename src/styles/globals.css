@@ -1,7 +1,13 @@
 /* src/app/globals.css */
 
 body {
-  background-color: black !important;
+  background-image: url('/images/assets_task_01jx3rxhxxfe4t4578fe550tx1_1749252287_img_0.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  color: #000;
+  font-family: 'Inter', sans-serif; /* Or your font of choice */
 }
 
 .modal-backdrop-blur {
