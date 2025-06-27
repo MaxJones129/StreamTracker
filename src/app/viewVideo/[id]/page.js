@@ -469,7 +469,7 @@ export default function ViewVideoPage() {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Status</Form.Label>
-              <Form.Select value={editData.status} onChange={(e) => setEditData({ ...editData, status: e.target.value })}>
+              <Form.Select value={editEpisodeData.status} onChange={(e) => setEditEpisodeData({ ...editEpisodeData, status: e.target.value })}>
                 <option value="">Select Status</option>
                 <option value="Watched">Watched</option>
                 <option value="Not Watched">Not Watched</option>
@@ -491,10 +491,16 @@ export default function ViewVideoPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(editEpisodeData),
               });
-              const res = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Episodes/video/${id}`);
+
+              // ✅ Refetch episodes according to the current filter
+              const refetchUrl = episodeFilter ? `https://streamtracker-be-9d38b309655b.herokuapp.com/api/Episodes/status/${episodeFilter}` : `https://streamtracker-be-9d38b309655b.herokuapp.com/api/Episodes/video/${id}`;
+
+              const res = await fetch(refetchUrl);
               const data = await res.json();
+              const filtered = episodeFilter ? data.$values.filter((ep) => ep.videoId.toString() === id.toString()) : data.$values;
+
               setEpisodes(
-                (data.$values || []).sort((a, b) => {
+                (filtered || []).sort((a, b) => {
                   if (a.season === 0 && b.season !== 0) return 1;
                   if (b.season === 0 && a.season !== 0) return -1;
                   const seasonCompare = (a.season ?? 0) - (b.season ?? 0);
@@ -502,6 +508,7 @@ export default function ViewVideoPage() {
                   return (a.episodeNumber ?? 0) - (b.episodeNumber ?? 0);
                 }),
               );
+
               setShowEditEpisodeModal(false);
             }}
           >
@@ -538,7 +545,7 @@ export default function ViewVideoPage() {
 
             <Form.Group className="mb-3" controlId="formDescription">
               <Form.Label>Status</Form.Label>
-              <Form.Select value={editData.status} onChange={(e) => setEditData({ ...editData, status: e.target.value })}>
+              <Form.Select value={editEpisodeData.status} onChange={(e) => setEditEpisodeData({ ...editEpisodeData, status: e.target.value })}>
                 <option value="">Select Status</option>
                 <option value="Watched">Watched</option>
                 <option value="Not Watched">Not Watched</option>
