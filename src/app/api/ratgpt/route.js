@@ -146,6 +146,7 @@ export async function POST(req) {
               "status": "Not Watched",
               "rating": 0
             }
+            Allowed status values are ONLY: "Watched", "Not Watched", or "Watching". No other status words.  
             If you don't know the description, leave it empty. All fields must be present. Use realistic values.
           `,
         },
@@ -253,6 +254,61 @@ export async function POST(req) {
         }),
       ),
     );
+
+    // ✅ Check if user's input implied they "have watched" the show
+    const loweredUserMsg = messages[messages.length - 1]?.content?.toLowerCase();
+    const saidWatched = loweredUserMsg.includes('have watched') || loweredUserMsg.includes('i watched') || loweredUserMsg.includes('finished watching') || loweredUserMsg.includes('i just finsihed') || loweredUserMsg.includes('i binged') || loweredUserMsg.includes('i completed') || loweredUserMsg.includes('i have seen') || loweredUserMsg.includes('i watched the whole show') || loweredUserMsg.includes('i just watched');
+
+    if (saidWatched) {
+      console.log('[RatGPT] User implied they watched the whole show. Marking all episodes as Watched...');
+
+      const episodesRes = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Episodes/video/${createdShow.id}`);
+      const episodesData = await episodesRes.json();
+
+      const updatePromises = (episodesData.$values || []).map((ep) =>
+        fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Episodes/${ep.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...ep,
+            status: 'Watched',
+            timeStopped: '00:45:00', // ✅ Optional: Give watched episodes a full timestamp
+          }),
+        }),
+      );
+
+      await Promise.all(updatePromises);
+    }
+
+    // ✅ Check if user mentioned "on episode X of season Y"
+    const onEpMatch = loweredUserMsg.match(/episode (\d+)\s*(?:of)?\s*season (\d+)/i) || loweredUserMsg.match(/season (\d+)\s*episode (\d+)/i);
+
+    if (onEpMatch) {
+      const seasonNum = parseInt(onEpMatch[2] || onEpMatch[1], 10);
+      const episodeNum = parseInt(onEpMatch[1] || onEpMatch[2], 10);
+
+      console.log(`[RatGPT] User is on Season ${seasonNum}, Episode ${episodeNum}. Updating episodes...`);
+
+      const episodesRes = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Episodes/video/${createdShow.id}`);
+      const episodesData = await episodesRes.json();
+      const allEpisodes = episodesData.$values || [];
+
+      const updatePromises = allEpisodes.map((ep) => {
+        const isBefore = ep.season < seasonNum || (ep.season === seasonNum && ep.episodeNumber < episodeNum);
+
+        return fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Episodes/${ep.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...ep,
+            status: isBefore ? 'Watched' : 'Not Watched',
+            timeStopped: isBefore ? '00:45:00' : ep.timeStopped || '00:00:00',
+          }),
+        });
+      });
+
+      await Promise.all(updatePromises);
+    }
 
     // 🔁 Get fresh hydrated list for user
     const userVideosRes = await fetch(`https://streamtracker-be-9d38b309655b.herokuapp.com/api/Videos/user/${userId}`);
